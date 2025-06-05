@@ -1,0 +1,405 @@
+/* static/style.css */
+
+:root {
+    /* Whimsical Storybook Color Palette */
+    --primary-story-gold: #D4AF37; /* Warm Gold */
+    --secondary-story-teal: #2A9D8F; /* Deep Teal */
+    --accent-rose: #E76F51; /* Dusty Rose/Coral */
+    --soft-cream: #FFFCE8; /* Very light cream/old paper */
+    --forest-green: #264653; /* Dark forest green */
+    --text-color: #333333; /* Dark grey for readability */
+    --light-text-color: #ffffff; /* White text on dark elements */
+    --dark-text-contrast: #1a1a1a; /* Even darker text for contrast */
+
+    --border-color-soft: rgba(0, 0, 0, 0.1);
+    --shadow-color-soft: rgba(0, 0, 0, 0.15);
+    --error-color: #e74c3c;
+    --success-color: #28a745;
+    --info-color: #007bff;
+}
+
+body {
+    font-family: 'Quicksand', sans-serif; /* Clean and friendly body font */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background: linear-gradient(135deg, #FAD0C4 0%, #FFD1FF 100%); /* Soft, dreamy gradient */
+    flex-direction: column;
+    overflow-x: hidden;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative; /* For background layers */
+}
+
+/* Ensure no pattern on .storybook-background directly affecting foreground */
+.storybook-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--soft-cream); /* Solid background to prevent patterns showing through */
+    opacity: 0.3; /* Keep some transparency for blend with body gradient */
+    z-index: -1;
+    filter: sepia(0.1); /* Keep slight sepia tone */
+    /* Ensure no background-image here */
+}
+
+.container {
+    background-color: var(--soft-cream); /* Creamy background like an old page */
+    padding: 45px; /* More generous padding */
+    border-radius: 20px; /* Softer, rounded corners */
+    box-shadow: 0 12px 30px var(--shadow-color-soft);
+    text-align: center;
+    max-width: 1000px;
+    width: 100%;
+    margin: 20px auto;
+    position: relative;
+    z-index: 1;
+    border: 3px dashed var(--secondary-story-teal); /* Playful dashed border */
+    animation: popIn 1s ease-out; /* A more playful entrance animation */
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.8) translateY(20px); opacity: 0; }
+    80% { transform: scale(1.05) translateY(-5px); opacity: 1; }
+    100% { transform: scale(1) translateY(0); }
+}
+
+h1 {
+    font-family: 'Merriweather', serif; /* Classic storybook title font */
+    color: var(--forest-green); /* Deep green for titles */
+    font-size: 3.5em; /* Larger, more impactful */
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.15);
+    position: relative;
+    display: inline-block; /* To allow pseudo-elements */
+}
+
+h1::before, h1::after {
+    content: '✨'; /* Little sparkle accents */
+    position: absolute;
+    font-size: 0.6em;
+    top: 0;
+}
+h1::before { left: -0.8em; }
+h1::after { right: -0.8em; }
+
+.intro {
+    font-family: 'Indie Flower', cursive; /* Hand-written feel for intro */
+    font-size: 1.4em;
+    color: var(--text-color);
+    margin-bottom: 40px;
+    line-height: 1.5;
+}
+
+.input-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* More space */
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+input[type="text"],
+select {
+    font-family: 'Quicksand', sans-serif;
+    padding: 15px 20px;
+    font-size: 1.1em;
+    border: 3px solid var(--secondary-story-teal); /* Thicker, teal border */
+    background-color: var(--light-text-color); /* Explicitly white background */
+    color: var(--dark-text-contrast); /* Darker text for better contrast */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* More pronounced shadow */
+    border-radius: 10px; /* Rounded rectangles */
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth transition */
+    /* Explicitly remove any other background images */
+    background-image: none !important; /* Force no background image on inputs */
+}
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    /* Re-add ONLY the arrow as a background image */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23264653%22%20d%3D%22M287%2C197.3L159.2%2C69.5c-3.2-3.2-8.3-3.2-11.5%2C0L5.4%2C197.3c-3.2%2C3.2-3.2%2C8.3%2C0%2C11.5l11.5%2C11.5c3.2%2C3.2%2C8.3%2C3.2%2C11.5%2C0l118.8-118.8l118.8%2B118.8c3.2%2B3.2%2B8.3%2B3.2%2B11.5%2B0l11.5-11.5C290.2%2C205.6%2C290.2%2C200.5%2C287%2C197.3z%22%2F%3E%3C%2Fsvg%3E'); /* Darker arrow (forest green) */
+    background-size: 14px auto; /* Slightly larger arrow */
+    background-position: right 15px center;
+    background-repeat: no-repeat; /* Ensure no repetition of the arrow */
+    padding-right: 40px;
+}
+
+input[type="text"] {
+    width: 35%; /* Adjust width */
+    max-width: 280px;
+}
+
+select {
+    width: 28%; /* Adjust width */
+    max-width: 290px;
+}
+
+input[type="text"]:focus,
+select:focus {
+    border-color: var(--primary-story-gold); /* Gold border on focus */
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.3); /* Soft gold glow */
+}
+
+button#searchButton {
+    font-family: 'Merriweather', serif;
+    padding: 18px 35px; /* Larger button */
+    font-size: 1.2em;
+    background: linear-gradient(135deg, var(--primary-story-gold) 0%, var(--accent-rose) 100%); /* Gradient button */
+    color: var(--light-text-color);
+    border: none;
+    border-radius: 30px; /* Pill shape for button */
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+button#searchButton:hover {
+    transform: translateY(-5px) scale(1.02); /* More pronounced hover */
+    box-shadow: 0 12px 25px rgba(0,0,0,0.35);
+    background: linear-gradient(135deg, var(--primary-story-gold), var(--secondary-story-teal)); /* Change gradient on hover */
+}
+button#searchButton:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.message {
+    font-family: 'Indie Flower', cursive; /* Handwritten feel for messages */
+    font-size: 1.2em;
+    margin-bottom: 25px;
+    padding: 12px 20px;
+    border-radius: 15px; /* Rounded message box */
+    animation: fadeIn 0.6s ease-in-out;
+    border: 2px solid; /* Solid border */
+    font-weight: 600;
+    color: var(--text-color); /* Default text color */
+}
+
+.message.error-message {
+    background-color: #fce7e5; /* Light red background */
+    border-color: var(--error-color);
+    color: var(--error-color);
+}
+.message.success-message {
+    background-color: #e6ffe6; /* Light green background */
+    border-color: var(--success-color);
+    color: var(--success-color);
+}
+.message.info-message {
+    background-color: #e0f2fe; /* Light blue background */
+    border-color: var(--info-color);
+    color: var(--info-color);
+}
+
+.book-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Slightly larger cards */
+    gap: 35px; /* More space between cards */
+    margin-top: 40px;
+}
+
+/* Styling for the anchor tag wrapping the book card */
+.book-card-link {
+    text-decoration: none; /* Remove underline from the link */
+    color: inherit; /* Inherit text color from children */
+    display: block; /* Make the link fill the card area */
+}
+
+.book-card {
+    background-color: var(--light-text-color); /* White card background */
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    border: 2px solid var(--border-color-soft); /* Soft border */
+    position: relative;
+    overflow: hidden;
+    background-image: none; /* Ensure book-card itself doesn't have a pattern that could bleed */
+}
+
+.book-card:hover {
+    transform: translateY(-8px); /* More significant lift */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+    border-color: var(--accent-rose); /* Highlight border on hover */
+}
+
+/* Page curl effect for book cards */
+.book-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 0 30px 30px; /* Adjust size of the curl */
+    border-color: transparent transparent var(--accent-rose) transparent; /* Color of the curl */
+    border-bottom-right-radius: 15px; /* Matches card radius */
+    box-shadow: -2px -2px 5px rgba(0,0,0,0.1); /* Subtle shadow for curl */
+    transition: border-color 0.3s ease;
+    background-image: none; /* Ensure this pseudo-element isn't using a pattern */
+}
+
+.book-card:hover::before {
+    border-color: transparent transparent var(--primary-story-gold) transparent; /* Change curl color on hover */
+}
+
+.book-thumbnail {
+    width: 130px; /* Slightly larger thumbnail */
+    height: auto;
+    border-radius: 8px; /* Softer corners */
+    margin-bottom: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border: 3px solid var(--primary-story-gold); /* Gold frame */
+    transition: transform 0.2s ease-in-out;
+}
+.book-card:hover .book-thumbnail {
+    transform: scale(1.05); /* Slight zoom on thumbnail */
+}
+
+.no-thumbnail {
+    width: 130px;
+    height: 190px; /* Adjusted ratio */
+    background-color: #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #666;
+    font-size: 1em;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border: 3px dashed var(--secondary-story-teal); /* Thematic dashed border */
+}
+
+.book-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    padding-top: 10px;
+}
+
+.book-title {
+    font-family: 'Merriweather', serif;
+    font-size: 1.6em; /* Larger title */
+    color: var(--forest-green);
+    margin-top: 0;
+    margin-bottom: 10px;
+    line-height: 1.3;
+    height: 4em; /* Fixed height for 3 lines */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    font-weight: 700;
+}
+
+.book-author {
+    font-family: 'Quicksand', sans-serif;
+    font-style: italic;
+    font-size: 1.1em;
+    color: var(--text-color);
+    margin-bottom: 8px;
+}
+
+.book-published {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.9em;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+.book-description {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.95em;
+    color: #555;
+    margin-top: auto;
+    line-height: 1.5;
+    max-height: 4.5em; /* Limit description to ~3 lines */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    .container {
+        padding: 35px;
+    }
+    h1 {
+        font-size: 3em;
+    }
+    .input-section {
+        flex-direction: column;
+        gap: 15px;
+    }
+    input[type="text"],
+    select,
+    button#searchButton {
+        width: 85% !important;
+        max-width: 450px;
+    }
+    .book-results {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 25px;
+    }
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 25px;
+    }
+    h1 {
+        font-size: 2.5em;
+    }
+    .intro {
+        font-size: 1.1em;
+    }
+    .input-section {
+        gap: 10px;
+    }
+    input[type="text"],
+    select,
+    button#searchButton {
+        width: 95% !important;
+    }
+    .book-results {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+@media (max-width: 400px) {
+    body {
+        padding: 10px;
+    }
+    .container {
+        padding: 15px;
+    }
+    h1 {
+        font-size: 2em;
+    }
+    .intro {
+        font-size: 1em;
+    }
+}

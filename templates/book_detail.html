@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ book.title }} - Book Details</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Quicksand:wght@400;600&family=Indie+Flower&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Specific styles for the book detail page to maintain theme */
+        .detail-container {
+            background-color: var(--soft-cream);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 12px 30px var(--shadow-color-soft);
+            max-width: 900px;
+            margin: 50px auto;
+            text-align: left;
+            border: 3px dashed var(--secondary-story-teal);
+            animation: fadeIn 1s ease-out;
+        }
+
+        .detail-header {
+            display: flex;
+            align-items: flex-start; /* Align items to the top */
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        }
+
+        .detail-thumbnail {
+            width: 200px; /* Larger thumbnail for detail */
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+            border: 4px solid var(--primary-story-gold);
+            flex-shrink: 0; /* Prevents it from shrinking on smaller screens */
+        }
+
+        .detail-info {
+            flex-grow: 1; /* Allows this section to take available space */
+            padding-right: 20px; /* Some padding if it's next to the thumbnail */
+        }
+
+        .detail-title {
+            font-family: 'Merriweather', serif;
+            color: var(--forest-green);
+            font-size: 2.8em;
+            margin-top: 0;
+            margin-bottom: 10px;
+            line-height: 1.2;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .detail-author {
+            font-family: 'Quicksand', sans-serif;
+            font-style: italic;
+            font-size: 1.5em;
+            color: var(--text-color);
+            margin-bottom: 15px;
+        }
+
+        .detail-meta {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .detail-summary {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.1em;
+            color: #444;
+            line-height: 1.8;
+            text-align: justify;
+            margin-top: 25px;
+            border-top: 1px dashed var(--border-color-soft);
+            padding-top: 20px;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            font-family: 'Merriweather', serif;
+            background: linear-gradient(135deg, var(--secondary-story-teal) 0%, var(--forest-green) 100%);
+            color: var(--light-text-color);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none; /* Remove underline from link */
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            font-weight: 600;
+        }
+
+        .back-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, var(--forest-green), var(--secondary-story-teal));
+        }
+
+        /* Responsive adjustments for detail page */
+        @media (max-width: 768px) {
+            .detail-container {
+                margin: 30px 15px;
+                padding: 30px;
+            }
+            .detail-header {
+                flex-direction: column; /* Stack thumbnail and info vertically */
+                align-items: center; /* Center items */
+                text-align: center; /* Center text */
+            }
+            .detail-thumbnail {
+                margin-bottom: 20px;
+            }
+            .detail-title {
+                font-size: 2em;
+            }
+            .detail-author {
+                font-size: 1.2em;
+            }
+            .detail-summary {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="storybook-background"></div>
+
+    <div class="detail-container">
+        <div class="detail-header">
+            {% if book.thumbnail %}
+                <img src="{{ book.thumbnail }}" alt="{{ book.title }} Cover" class="detail-thumbnail">
+            {% else %}
+                <div class="no-thumbnail detail-thumbnail">No Cover Illustrated</div>
+            {% endif %}
+            <div class="detail-info">
+                <h2 class="detail-title">{{ book.title }}</h2>
+                <p class="detail-author">by {{ book.author }}</p>
+                <p class="detail-meta">Published: {{ book.publishedDate }}</p>
+                <p class="detail-meta">Pages: {{ book.pageCount }}</p>
+                <p class="detail-meta">Category: {{ book.categories }}</p>
+                {% if book.previewLink and book.previewLink != '#' %}
+                    <a href="{{ book.previewLink }}" target="_blank" class="back-button" style="background: linear-gradient(135deg, var(--accent-rose) 0%, var(--primary-story-gold) 100%);">Read Preview ↗️</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <p class="detail-summary">
+            **Summary:**<br>
+            {{ book.description | safe }} {# 'safe' filter tells Jinja2 not to escape HTML if any #}
+        </p>
+        
+        <a href="/" class="back-button">Back to Library</a>
+    </div>
+</body>
+</html>

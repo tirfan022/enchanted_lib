@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Enchanted Library Recommender</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Quicksand:wght@400;600&family=Indie+Flower&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="storybook-background"></div>
+
+    <div class="container">
+        
+        <h1>📖 The Enchanted Library 💫</h1>
+        <p class="intro">Whisper your mood and curiosity, and let the magic of stories unfold!</p>
+
+        <div class="input-section">
+            <input type="text" id="searchInput" placeholder="e.g., fairytale, adventure, mystery">
+
+            <select id="moodSelect">
+                <option value="">Feeling like a...</option>
+                <option value="happy">Sunny Day ☀️</option>
+                <option value="adventurous">Grand Journey 🏞️</option>
+                <option value="serious">Quiet Reflection 🧐</option>
+                <option value="relaxed">Cozy Corner ☕</option>
+                <option value="mysterious">Hidden Path 🤫</option>
+                <option value="inspiring">Bright Idea ✨</option>
+                <option value="informative">Curious Discovery 💡</option>
+            </select>
+
+            <select id="choiceSelect">
+                <option value="">Exploring the realm of...</option>
+                <option value="fiction">Timeless Tales 📜</option>
+                <option value="fantasy">Mythical Realms 🧚</option>
+                <option value="sci-fi">Distant Futures 🚀</option>
+                <option value="mystery">Unsolved Riddles 🔍</option>
+                <option value="romance">Hearts Entwined ❤️</option>
+                <option value="thriller">Whispering Suspense 🔪</option>
+                <option value="history">Echoes of the Past 🕰️</option>
+                <option value="biography">Lives Unfolded 👤</option>
+                <option value="self-help">Wisdom Seeds 🌱</option>
+                <option value="cooking">Feast of Flavors 🍎</option>
+                <option value="travel">Distant Shores ✈️</option>
+            </select>
+
+            <button id="searchButton">Open Book!</button>
+        </div>
+
+        <p id="message" class="message"></p>
+        <div id="bookResults" class="book-results">
+            </div>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const moodSelect = document.getElementById('moodSelect');
+        const choiceSelect = document.getElementById('choiceSelect');
+        const searchButton = document.getElementById('searchButton');
+        const bookResultsDiv = document.getElementById('bookResults');
+        const messageDiv = document.getElementById('message');
+
+        async function searchBooks() {
+            const query = searchInput.value.trim();
+            const mood = moodSelect.value;
+            const choice = choiceSelect.value;
+
+            if (!query && !mood && !choice) {
+                messageDiv.className = 'message error-message';
+                messageDiv.textContent = 'Oh dear, the page is blank! Please tell me what you seek.';
+                bookResultsDiv.innerHTML = ''; // Clear previous results
+                return;
+            }
+
+            messageDiv.className = 'message info-message';
+            messageDiv.textContent = 'The scrolls are rustling... Awaiting new tales... ✨';
+            bookResultsDiv.innerHTML = ''; // Clear previous results
+
+            const params = new URLSearchParams();
+            if (query) params.append('query', query);
+            if (mood) params.append('mood', mood);
+            if (choice) params.append('choice', choice);
+
+            try {
+                const response = await fetch(`/api/search_books?${params.toString()}`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    if (data.books && data.books.length > 0) {
+                        messageDiv.textContent = `Aha! The ink reveals ${data.books.length} enchanting stories.`;
+                        messageDiv.className = 'message success-message';
+                        data.books.forEach(book => {
+                            // Ensure book.id exists for the detail page link
+                            if (book.id) {
+                                // Create the anchor tag for the entire book card
+                                const bookLink = document.createElement('a');
+                                bookLink.href = `/book/${book.id}`; // Link to the new detail page
+                                bookLink.className = 'book-card-link'; // Optional: for specific styling if needed
+
+                                const bookCard = document.createElement('div');
+                                bookCard.className = 'book-card';
+                                
+                                const thumbnail = book.thumbnail ? `<img src="${book.thumbnail}" alt="${book.title} thumbnail" class="book-thumbnail">` : '<div class="no-thumbnail">No Cover Illustrated</div>';
+                                
+                                // Populate the book card with data
+                                bookCard.innerHTML = `
+                                    ${thumbnail}
+                                    <div class="book-info">
+                                        <h3 class="book-title">${book.title}</h3>
+                                        <p class="book-author">by ${book.author}</p>
+                                        <p class="book-published">First Page: ${book.publishedDate}</p>
+                                        <p class="book-description">${book.description ? book.description.substring(0, 150) + '...' : 'No summary available.'}</p>
+                                    </div>
+                                `;
+                                bookLink.appendChild(bookCard); // Append the card to the link
+                                bookResultsDiv.appendChild(bookLink); // Append the link to the results container
+                            }
+                        });
+                    } else {
+                        messageDiv.className = 'message info-message';
+                        messageDiv.textContent = data.message || `No tales were found in this realm. Try another whisper of interest!`;
+                    }
+                } else {
+                    // Handle server-side errors from /api/search_books
+                    messageDiv.className = 'message error-message';
+                    messageDiv.textContent = data.error || "A mischievous sprite has tangled the pages. Try again!";
+                }
+            } catch (error) {
+                // Handle client-side network errors
+                messageDiv.className = 'message error-message';
+                messageDiv.textContent = `The mystical connection is lost: ${error.message}. Check the magic crystal ball.`;
+                console.error('Fetch error:', error);
+            }
+        }
+
+        // Event listeners for search button and Enter key
+        searchButton.addEventListener('click', searchBooks);
+        searchInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                searchBooks();
+            }
+        });
+
+        // Initial welcome message on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            messageDiv.className = 'message info-message';
+            messageDiv.textContent = 'Welcome, seeker of stories. What adventure awaits?';
+        });
+    </script>
+</body>
+</html>

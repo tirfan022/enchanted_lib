@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oh dear, a missing tale!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Quicksand:wght@400;600&family=Indie+Flower&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .error-container {
+            background-color: var(--soft-cream);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 12px 30px var(--shadow-color-soft);
+            max-width: 600px;
+            margin: 100px auto;
+            text-align: center;
+            border: 3px dashed var(--accent-rose);
+            animation: fadeIn 1s ease-out;
+        }
+        .error-container h2 {
+            font-family: 'Merriweather', serif;
+            color: var(--error-color);
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .error-container p {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.2em;
+            color: var(--text-color);
+            margin-bottom: 30px;
+        }
+        .error-container .back-button {
+            background: linear-gradient(135deg, var(--error-color) 0%, #D4AF37 100%); /* Error-themed button */
+        }
+        .error-container .back-button:hover {
+            background: linear-gradient(135deg, #D4AF37, var(--error-color)); /* Hover effect */
+        }
+    </style>
+</head>
+<body>
+    <div class="storybook-background"></div>
+
+    <div class="error-container">
+        <h2>Oops! The page is torn...</h2>
+        <p>{{ message }}</p>
+        <a href="/" class="back-button">Return to the Library</a>
+    </div>
+</body>
+</html>
