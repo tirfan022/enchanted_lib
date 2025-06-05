@@ -1,10 +1,10 @@
 from flask import Flask, render_template, jsonify, request
 import requests
-import re # Import regex for cleaning HTML tags
+import re 
 
 app = Flask(__name__)
 
-# Google Books API Base URL for volumes
+# Google Books API Base URL
 GOOGLE_BOOKS_API_BASE_URL = "https://www.googleapis.com/books/v1/volumes"
 
 @app.route('/')
@@ -35,7 +35,6 @@ def search_books():
 
     q_param = " ".join(search_terms)
 
-    # Limit the number of results to display for performance
     max_results = 20
 
     params = {
@@ -45,7 +44,7 @@ def search_books():
 
     try:
         response = requests.get(GOOGLE_BOOKS_API_BASE_URL, params=params)
-        response.raise_for_status() # Raise an exception for HTTP errors (4xx or 5xx)
+        response.raise_for_status()
         data = response.json()
 
         books_data = []
@@ -53,17 +52,17 @@ def search_books():
             for item in data['items']:
                 volume_info = item.get('volumeInfo', {})
                 
-                # Extract description and clean HTML tags for snippet display
+                # Extract description and clean HTML tags
                 description = volume_info.get('description', 'No summary available.')
-                description = re.sub(r'<[^>]+>', '', description) # Simple regex to strip HTML tags
+                description = re.sub(r'<[^>]+>', '', description) # regex to strip HTML tags
 
                 books_data.append({
-                    "id": item.get('id'), # Essential: Google Books ID for detail page
+                    "id": item.get('id'),
                     "title": volume_info.get('title', 'N/A'),
                     "author": ", ".join(volume_info.get('authors', ['N/A'])),
                     "publishedDate": volume_info.get('publishedDate', 'N/A'),
                     "thumbnail": volume_info.get('imageLinks', {}).get('thumbnail'),
-                    "description": description # Cleaned description for brief display
+                    "description": description # Cleaned description 
                 })
         else:
             return jsonify({"message": "No tales were found in this realm. Try another whisper of interest!"}), 200
@@ -101,7 +100,7 @@ def book_detail(book_id):
             "previewLink": volume_info.get('previewLink', '#')
         }
         
-        # Clean up HTML tags from the full description for display on detail page
+        # Clean up HTML tags from the full description
         book['description'] = re.sub(r'<[^>]+>', '', book['description'])
 
         return render_template('book_detail.html', book=book)
@@ -116,8 +115,8 @@ def book_detail(book_id):
         # Handle other request-related errors
         return render_template('error.html', message=f"A network spell has gone awry: {e}. Check your connection to the mystical realms."), 500
     except Exception as e:
-        # Catch any other unexpected errors
+        # Catch errors
         return render_template('error.html', message=f"An unexpected event disturbed the narrative: {e}. The story needs rewriting!"), 500
 
 if __name__ == '__main__':
-    app.run(debug=True) # Run Flask in debug mode for easier development
+    app.run(debug=True)

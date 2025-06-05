@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Enchanted Library Recommender</title>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Quicksand:wght@400;600&family=Indie+Flower&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Quicksand:wght@400;600&family=Indie+Flower&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
     <div class="storybook-background"></div>
 
     <div class="container">
-        
+
         <h1>📖 The Enchanted Library 💫</h1>
         <p class="intro">Whisper your mood and curiosity, and let the magic of stories unfold!</p>
 
@@ -19,29 +23,29 @@
             <input type="text" id="searchInput" placeholder="e.g., fairytale, adventure, mystery">
 
             <select id="moodSelect">
-                <option value="">Feeling like a...</option>
-                <option value="happy">Sunny Day ☀️</option>
-                <option value="adventurous">Grand Journey 🏞️</option>
-                <option value="serious">Quiet Reflection 🧐</option>
-                <option value="relaxed">Cozy Corner ☕</option>
-                <option value="mysterious">Hidden Path 🤫</option>
-                <option value="inspiring">Bright Idea ✨</option>
-                <option value="informative">Curious Discovery 💡</option>
+                <option value="">Select your current mood...</option>
+                <option value="happy">Happy</option>
+                <option value="adventurous">Adventurous</option>
+                <option value="serious">Serious</option>
+                <option value="relaxed">Relaxed</option>
+                <option value="mysterious">Mysterious</option>
+                <option value="inspiring">Inspiring</option>
+                <option value="informative">Informative</option>
             </select>
 
             <select id="choiceSelect">
-                <option value="">Exploring the realm of...</option>
-                <option value="fiction">Timeless Tales 📜</option>
-                <option value="fantasy">Mythical Realms 🧚</option>
-                <option value="sci-fi">Distant Futures 🚀</option>
-                <option value="mystery">Unsolved Riddles 🔍</option>
-                <option value="romance">Hearts Entwined ❤️</option>
-                <option value="thriller">Whispering Suspense 🔪</option>
-                <option value="history">Echoes of the Past 🕰️</option>
-                <option value="biography">Lives Unfolded 👤</option>
-                <option value="self-help">Wisdom Seeds 🌱</option>
-                <option value="cooking">Feast of Flavors 🍎</option>
-                <option value="travel">Distant Shores ✈️</option>
+                <option value="">Select a genre...</option>
+                <option value="fiction">Fiction</option>
+                <option value="fantasy">Fantasy</option>
+                <option value="sci-fi">Science Fiction</option>
+                <option value="mystery">Mystery</option>
+                <option value="romance">Romance</option>
+                <option value="thriller">Thriller</option>
+                <option value="history">History</option>
+                <option value="biography">Biography</option>
+                <option value="self-help">Self-Help</option>
+                <option value="cooking">Cooking</option>
+                <option value="travel">Travel</option>
             </select>
 
             <button id="searchButton">Open Book!</button>
@@ -49,7 +53,7 @@
 
         <p id="message" class="message"></p>
         <div id="bookResults" class="book-results">
-            </div>
+        </div>
     </div>
 
     <script>
@@ -99,9 +103,9 @@
 
                                 const bookCard = document.createElement('div');
                                 bookCard.className = 'book-card';
-                                
+
                                 const thumbnail = book.thumbnail ? `<img src="${book.thumbnail}" alt="${book.title} thumbnail" class="book-thumbnail">` : '<div class="no-thumbnail">No Cover Illustrated</div>';
-                                
+
                                 // Populate the book card with data
                                 bookCard.innerHTML = `
                                     ${thumbnail}
@@ -148,4 +152,5 @@
         });
     </script>
 </body>
+
 </html>
